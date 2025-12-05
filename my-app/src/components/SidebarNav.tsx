@@ -25,7 +25,7 @@ export default function SidebarNav() {
   const toggleOpen = (key: string) => setOpen((s) => ({ ...s, [key]: !s[key] }))
 
   return (
-    <aside className={`${collapsed ? 'w-20' : 'w-64'} h-full bg-white shadow-xl rounded-xl m-4 flex flex-col transition-all duration-200`}
+    <aside className={`${collapsed ? 'w-15' : 'w-84'} h-full bg-white shadow-xl  flex flex-col transition-all duration-200`}
       aria-label="Sidebar navigation">
       <div className="px-3 py-3 border-b flex items-center justify-between">
         <div className="flex items-center gap-3">
