@@ -60,7 +60,7 @@ export default function CreatePaymentRequest() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-6">
       <div className="max-w-5xl mx-auto">
         <div className="mb-8 text-center">
           <div className="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold tracking-wide">PAIEMENT SÉCURISÉ</div>
@@ -72,7 +72,7 @@ export default function CreatePaymentRequest() {
           {/* Card Preview */}
           <div className="lg:col-span-1">
             <div className="sticky top-6">
-              <div className="relative h-64 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white p-6 shadow-2xl">
+              <div className="relative h-64 rounded-3xl bg-linear-to-br from-emerald-400 to-teal-600 text-white p-6 shadow-2xl">
                 <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
                 <div className="flex justify-between items-start">
                   <div className="text-xs uppercase tracking-widest opacity-80">Carte Bancaire</div>
@@ -97,7 +97,7 @@ export default function CreatePaymentRequest() {
               <div className="mt-6 rounded-2xl bg-white p-5 shadow-md border border-gray-200">
                 <div className="flex items-center justify-between mb-3">
                   <div className="text-sm font-semibold text-gray-700">Résumé</div>
-                  <div className="h-1 w-12 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" />
+                  <div className="h-1 w-12 bg-linear-to-r from-emerald-400 to-teal-500 rounded-full" />
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -225,7 +225,7 @@ export default function CreatePaymentRequest() {
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className={`mt-8 w-full rounded-xl px-6 py-3 text-white font-semibold ${canSubmit ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' : 'bg-gray-300 cursor-not-allowed'} transition-all duration-200 shadow hover:shadow-lg`}
+                className={`mt-8 w-full rounded-xl px-6 py-3 text-white font-semibold ${canSubmit ? 'bg-linear-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' : 'bg-gray-300 cursor-not-allowed'} transition-all duration-200 shadow hover:shadow-lg`}
               >
                 Créer la demande
               </button>
