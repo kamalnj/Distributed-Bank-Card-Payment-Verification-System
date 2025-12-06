@@ -23,7 +23,7 @@ function badgeClasses(s: Transaction['status']) {
   return 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
 }
 
-export default function TransactionsHistory() {
+export default function TransactionsHistory({ onViewDetails }: { onViewDetails?: (id: string) => void }) {
   const [expanded, setExpanded] = useState<string | null>(null)
 
   return (
@@ -72,7 +72,13 @@ export default function TransactionsHistory() {
                       <td className="px-6 py-4">
                         <button
                           className="text-indigo-600 hover:text-indigo-800 text-sm font-medium underline underline-offset-2"
-                          onClick={() => setExpanded((e) => (e === t.id ? null : t.id))}
+                          onClick={() => {
+                            if (onViewDetails) {
+                              onViewDetails(t.id)
+                            } else {
+                              setExpanded((e) => (e === t.id ? null : t.id))
+                            }
+                          }}
                         >
                           Voir
                         </button>
