@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { MdMenu, MdInsertChart, MdPublic, MdColorLens, MdDiamond, MdShoppingCart, MdExpandMore, MdChevronRight } from 'react-icons/md'
+import { MdMenu, MdCreditCard, MdPublic, MdColorLens, MdDiamond, MdShoppingCart, MdExpandMore, MdChevronRight, MdDashboard } from 'react-icons/md'
 import type { IconType } from 'react-icons'
 
 type Item = { label: string; icon: IconType; children?: Array<{ label: string }> }
 
 const general: Item[] = [
-  { label: 'Charts', icon: MdInsertChart, children: [{ label: 'Pie charts' }, { label: 'Line charts' }] },
+  { label: 'Dashboard', icon: MdDashboard },
+  { label: 'Payment', icon: MdCreditCard, children: [{ label: 'Create Payment' }, { label: 'Transactions History' }] },
   { label: 'Maps', icon: MdPublic },
   { label: 'Theme', icon: MdColorLens },
   { label: 'Components', icon: MdDiamond },
@@ -14,10 +15,10 @@ const general: Item[] = [
 
 
 
-export default function SidebarNav() {
+export default function SidebarNav({ onNavigate }: { onNavigate?: (view: 'create' | 'history' | 'dashboard') => void }) {
   const [collapsed, setCollapsed] = useState(false)
-  const [open, setOpen] = useState<Record<string, boolean>>({ Charts: true })
-  const [activeItem, setActiveItem] = useState('Charts')
+  const [open, setOpen] = useState<Record<string, boolean>>({ Payment: true })
+  const [activeItem, setActiveItem] = useState('Payment')
 
   const toggleOpen = (key: string) => setOpen((s) => ({ ...s, [key]: !s[key] }))
 
@@ -64,6 +65,9 @@ export default function SidebarNav() {
                     toggleOpen(item.label)
                   }
                   setActiveItem(item.label)
+                  if (item.label === 'Dashboard' && onNavigate) {
+                    onNavigate('dashboard')
+                  }
                 }}
                 aria-expanded={!!open[item.label]}
               >
@@ -96,9 +100,17 @@ export default function SidebarNav() {
               {item.children && open[item.label] && !collapsed && (
                 <div className="ml-11 mt-1 space-y-1 overflow-hidden animate-in slide-in-from-top-2 duration-200">
                   {item.children.map((c) => (
-                    <button 
-                      key={c.label} 
+                    <button
+                      key={c.label}
                       className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-600 text-sm text-gray-600 hover:text-white transition-all duration-200 flex items-center gap-2 group"
+                      onClick={() => {
+                        if (c.label === 'Create Payment') {
+                          if (onNavigate) onNavigate('create')
+                        }
+                        if (c.label === 'Transactions History') {
+                          if (onNavigate) onNavigate('history')
+                        }
+                      }}
                     >
                       <span className="text-gray-400 group-hover:text-white transition-colors">
                         <MdChevronRight size={16} />
