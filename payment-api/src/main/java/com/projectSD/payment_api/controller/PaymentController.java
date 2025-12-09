@@ -1,4 +1,8 @@
 package com.projectSD.payment_api.controller;
+import org.springframework.http.ResponseEntity;
+import java.util.List;
+import com.projectSD.payment_api.entity.PaymentEntity;
+
 
 import com.projectSD.payment_api.dto.PaymentRequestDTO;
 import com.projectSD.payment_api.dto.PaymentResponseDTO;
@@ -16,5 +20,18 @@ public class PaymentController {
     @PostMapping
     public PaymentResponseDTO create(@RequestBody PaymentRequestDTO dto) {
         return service.createPayment(dto);
+    }
+
+        @GetMapping("/list")
+    public ResponseEntity<List<PaymentEntity>> list() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    // ✅ GET : un seul paimement
+    @GetMapping("/{id}")
+    public ResponseEntity<PaymentEntity> get(@PathVariable Long id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

@@ -1,4 +1,7 @@
 package com.projectSD.payment_api.service;
+import java.util.List;
+import java.util.Optional;
+
 
 import com.projectSD.payment_api.dto.PaymentRequestDTO;
 import com.projectSD.payment_api.dto.PaymentResponseDTO;
@@ -59,5 +62,13 @@ public class PaymentService {
         out.setTransactionId(txResp.getTransactionId());
 
         return out;
+    }
+
+        public List<PaymentEntity> findAll() {
+        return paymentRepository.findAll();
+    }
+
+    public Optional<PaymentEntity> findById(Long id) {
+        return paymentRepository.findById(id);
     }
 }

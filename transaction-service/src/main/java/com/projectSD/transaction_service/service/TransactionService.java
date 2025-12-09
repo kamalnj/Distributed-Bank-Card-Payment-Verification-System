@@ -1,5 +1,6 @@
 package com.projectSD.transaction_service.service;
-
+import java.util.List;
+import java.util.Optional;
 import com.projectSD.transaction_service.dto.PaymentRequestDTO;
 import com.projectSD.transaction_service.dto.TransactionResponse;
 import com.projectSD.transaction_service.entity.TransactionEntity;
@@ -44,6 +45,14 @@ public class TransactionService {
         } catch (Exception ex) {
             throw new RuntimeException("RMI error: " + ex.getMessage(), ex);
         }
+    }
+
+    public List<TransactionEntity> findAll() {
+        return repo.findAll();
+    }
+
+    public Optional<TransactionEntity> findById(Long id) {
+        return repo.findById(id);
     }
 
     private String mask(String card){

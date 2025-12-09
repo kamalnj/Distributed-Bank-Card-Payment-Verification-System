@@ -17,7 +17,7 @@ import java.util.List;
 public class AdminCardController {
     private final AdminCardService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<BankCard> create(@RequestBody CardCreateDTO dto) {
         BankCard card = new BankCard(dto.getCardNumber(), dto.getExpiration(), dto.getCvv(), dto.getBalance(), dto.isActive());
         return ResponseEntity.ok(service.create(card));
@@ -28,10 +28,10 @@ public class AdminCardController {
         return service.get(cardNumber).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<BankCard>> list() { return ResponseEntity.ok(service.list()); }
 
-    @PutMapping("/{cardNumber}")
+    @PutMapping("/{cardNumber}/update")
     public ResponseEntity<BankCard> update(@PathVariable String cardNumber, @RequestBody CardUpdateDTO dto) {
         BankCard update = new BankCard();
         update.setExpiration(dto.getExpiration());
@@ -46,7 +46,7 @@ public class AdminCardController {
         return ResponseEntity.ok(service.topUp(cardNumber, amount));
     }
 
-    @DeleteMapping("/{cardNumber}")
+    @DeleteMapping("/{cardNumber}/delete")
     public ResponseEntity<Void> delete(@PathVariable String cardNumber) {
         service.delete(cardNumber);
         return ResponseEntity.noContent().build();
