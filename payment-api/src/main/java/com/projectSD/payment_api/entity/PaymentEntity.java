@@ -12,7 +12,6 @@ public class PaymentEntity {
     private BigDecimal montant;
     private String cardLast4;
     private String cardBrand;
-    private String nomClient;
     private String status;
     private LocalDateTime createdAt;
 
@@ -27,8 +26,6 @@ public class PaymentEntity {
     public void setCardLast4(String cardLast4){this.cardLast4 = cardLast4;}
     public String getCardBrand(){return cardBrand;}
     public void setCardBrand(String cardBrand){this.cardBrand = cardBrand;}
-    public String getNomClient(){return nomClient;}
-    public void setNomClient(String nomClient){this.nomClient = nomClient;}
     public String getStatus(){return status;}
     public void setStatus(String status){this.status = status;}
     public LocalDateTime getCreatedAt(){return createdAt;}

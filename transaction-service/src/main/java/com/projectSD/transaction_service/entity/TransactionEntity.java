@@ -11,7 +11,6 @@ public class TransactionEntity {
     private Long id;
     private BigDecimal montant;
     private String cardNumber; // masked
-    private String cardHolder;
     private String expiration;
     private String status; // SUCCESS / FAILED
     private String bankCode;
@@ -27,8 +26,6 @@ public class TransactionEntity {
     public void setMontant(BigDecimal montant){this.montant = montant;}
     public String getCardNumber(){return cardNumber;}
     public void setCardNumber(String cardNumber){this.cardNumber = cardNumber;}
-    public String getCardHolder(){return cardHolder;}
-    public void setCardHolder(String cardHolder){this.cardHolder = cardHolder;}
     public String getExpiration(){return expiration;}
     public void setExpiration(String expiration){this.expiration = expiration;}
     public String getStatus(){return status;}
