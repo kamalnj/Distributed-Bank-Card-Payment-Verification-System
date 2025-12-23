@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/merchant/api/payments")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 public class PaymentController {

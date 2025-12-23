@@ -32,7 +32,6 @@ public class PaymentService {
         // 2️⃣ Sauvegarde initiale du paiement
         PaymentEntity pay = new PaymentEntity();
         pay.setMontant(dto.getMontant());
-        pay.setNomClient(dto.getNomClient());
         pay.setStatus("CREATED");
 
         if (dto.getNumeroCarte() != null && dto.getNumeroCarte().length() >= 4) {

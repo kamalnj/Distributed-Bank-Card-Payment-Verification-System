@@ -1,3 +1,4 @@
+// ...existing code...
 import { useMemo, useState } from "react";
 import { FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
 import {
@@ -5,7 +6,6 @@ import {
   MdCreditCard,
   MdCalendarToday,
   MdLock,
-  MdPerson,
 } from "react-icons/md";
 
 function onlyDigits(v: string) {
@@ -47,7 +47,6 @@ export default function CreatePaymentRequest() {
   const [numeroCarte, setNumeroCarte] = useState("");
   const [expiration, setExpiration] = useState("");
   const [cvv, setCvv] = useState("");
-  const [nomClient, setNomClient] = useState("");
   const digits = useMemo(() => onlyDigits(numeroCarte), [numeroCarte]);
   const brand = useMemo(() => brandName(numeroCarte), [numeroCarte]);
 
@@ -56,39 +55,33 @@ export default function CreatePaymentRequest() {
   const cvvValid = /^[0-9]{3,4}$/.test(cvv);
   const amountValid = parseFloat(montant) > 0;
   const cardValid = luhnValid(numeroCarte);
-  const canSubmit =
-    amountValid &&
-    cardValid &&
-    expValid &&
-    cvvValid &&
-    nomClient.trim().length > 1;
- const onSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!canSubmit) return;
+  const canSubmit = amountValid && cardValid && expValid && cvvValid;
 
-  const payload = {
-    montant: parseFloat(montant),
-    numeroCarte: digits,
-    expiration,
-    cvv,
-    nomClient,
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSubmit) return;
+
+    const payload = {
+      montant: parseFloat(montant),
+      numeroCarte: digits,
+      expiration,
+      cvv,
+    };
+
+    const res = await fetch("http://localhost:8083/merchant/api/payments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert("Paiement accepté ✅\nTransaction: " + data.transactionId);
+    } else {
+      alert("Paiement refusé ❌\nCause: " + data.message);
+    }
   };
-
-const res = await fetch("http://localhost:8081/api/payments", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload),
-});
-
-const data = await res.json();
-
-if (data.success) {
-  alert("Paiement accepté ✅\nTransaction: " + data.transactionId);
-} else {
-  alert("Paiement refusé ❌\nCause: " + data.message);
-}
-
-};
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-6">
@@ -138,7 +131,7 @@ if (data.success) {
                 </div>
                 <div className="absolute bottom-5 left-6 right-6 flex justify-between text-sm">
                   <div className="font-medium">
-                    {nomClient || "Nom du titulaire"}
+                    {"Nom du titulaire"}
                   </div>
                   <div className="font-mono">{expiration || "MM/AA"}</div>
                 </div>
@@ -168,10 +161,6 @@ if (data.success) {
                   <div className="flex justify-between">
                     <span className="text-gray-500">Expiration</span>
                     <span className="text-gray-800">{expiration || "—"}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Titulaire</span>
-                    <span className="text-gray-800">{nomClient || "—"}</span>
                   </div>
                 </div>
               </div>
@@ -306,26 +295,6 @@ if (data.success) {
                       CVV 3 ou 4 chiffres
                     </div>
                   )}
-                </div>
-
-                {/* Nom du client */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Nom du titulaire
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                      <MdPerson size={20} />
-                    </span>
-                    <input
-                      type="text"
-                      value={nomClient}
-                      onChange={(e) => setNomClient(e.target.value)}
-                      required
-                      className="w-full border rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
-                      placeholder="Jean Dupont"
-                    />
-                  </div>
                 </div>
               </div>
 

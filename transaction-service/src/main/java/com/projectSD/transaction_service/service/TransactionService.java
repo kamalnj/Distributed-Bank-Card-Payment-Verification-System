@@ -29,7 +29,6 @@ public class TransactionService {
             TransactionEntity tx = new TransactionEntity();
             tx.setMontant(dto.getMontant());
             tx.setCardNumber(mask(dto.getNumeroCarte()));
-            tx.setCardHolder(dto.getNomClient());
             tx.setExpiration(dto.getExpiration());
             tx.setStatus(bankResp.isSuccess() ? "SUCCESS" : "FAILED");
             tx.setBankCode(bankResp.getCode());
