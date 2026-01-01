@@ -5,21 +5,18 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { jwtDecode } from "jwt-decode";
 
 /** Typage du token */
-interface JwtPayload {
-  sub: string;
-  role: "BANK_ADMIN" | "MERCHANT";
-  exp?: number;
-  iat?: number;
-  [key: string]: any;
+interface SessionUser {
+  userId?: number;
+  role?: "BANK_ADMIN" | "MERCHANT";
+  sub?: string;
 }
 
 /** Typage du contexte */
 interface AuthContextType {
-  user: JwtPayload | null;
-  login: (token: string) => void;
+  user: SessionUser | null;
+  login: (token: string, role?: "BANK_ADMIN" | "MERCHANT", userId?: number) => void;
   logout: () => void;
   loading: boolean;
 }
@@ -31,32 +28,34 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<JwtPayload | null>(null);
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   /** Initialisation au chargement */
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role") as "BANK_ADMIN" | "MERCHANT" | null;
+    const userIdStr = localStorage.getItem("userId");
+    const userId = userIdStr ? parseInt(userIdStr, 10) : undefined;
 
     if (token) {
-      try {
-        setUser(jwtDecode<JwtPayload>(token));
-      } catch {
-        localStorage.removeItem("token");
-        setUser(null);
-      }
+      setUser({ role: role ?? undefined, userId });
     }
 
     setLoading(false);
   }, []);
 
-  const login = (token: string) => {
+  const login = (token: string, role?: "BANK_ADMIN" | "MERCHANT", userId?: number) => {
     localStorage.setItem("token", token);
-    setUser(jwtDecode<JwtPayload>(token));
+    if (role) localStorage.setItem("role", role);
+    if (userId !== undefined) localStorage.setItem("userId", String(userId));
+    setUser({ role, userId });
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userId");
     setUser(null);
   };
 

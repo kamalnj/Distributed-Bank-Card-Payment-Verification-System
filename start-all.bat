@@ -1,0 +1,23 @@
+@echo off
+echo Starting all services...
+
+echo Starting Bank Core Service (RMI) on port 8081...
+start "Bank Core Service" cmd /k "cd bank-core-service-rmi && .\mvnw spring-boot:run"
+
+echo Waiting for Bank Core Service to initialize...
+timeout /t 10 /nobreak >nul
+
+echo Starting Transaction Service on port 8082...
+start "Transaction Service" cmd /k "cd transaction-service && .\mvnw spring-boot:run"
+
+echo Starting Payment API on port 8083...
+start "Payment API" cmd /k "cd payment-api && .\mvnw spring-boot:run"
+
+echo Starting Auth Service on port 8084...
+start "Auth Service" cmd /k "cd auth-service && .\mvnw spring-boot:run"
+
+echo Starting Frontend (my-app)...
+start "Frontend App" cmd /k "cd my-app && npm run dev"
+
+echo All services launch commands have been executed.
+pause

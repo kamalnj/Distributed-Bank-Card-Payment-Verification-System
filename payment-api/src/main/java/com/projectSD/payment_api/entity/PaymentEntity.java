@@ -14,6 +14,9 @@ public class PaymentEntity {
     private String cardBrand;
     private String status;
     private LocalDateTime createdAt;
+    
+    @Column(name = "user_id")
+    private Long userId;
 
     @PrePersist
     public void pre() { createdAt = LocalDateTime.now(); }
@@ -29,4 +32,7 @@ public class PaymentEntity {
     public String getStatus(){return status;}
     public void setStatus(String status){this.status = status;}
     public LocalDateTime getCreatedAt(){return createdAt;}
+    
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 }

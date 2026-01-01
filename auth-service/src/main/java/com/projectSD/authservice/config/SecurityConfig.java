@@ -22,9 +22,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // ✅ API REST → pas de session
+            // ✅ Utiliser des sessions HTTP (JSESSIONID)
             .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
 
             // ✅ CORS (React ↔ Spring)
