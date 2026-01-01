@@ -3,6 +3,7 @@ package com.projectSD.transaction_service.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="transactions")
@@ -15,6 +16,10 @@ public class TransactionEntity {
     private String status; // SUCCESS / FAILED
     private String bankCode;
     private String bankMessage;
+    
+    private Long userId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -35,4 +40,7 @@ public class TransactionEntity {
     public String getBankMessage(){return bankMessage;}
     public void setBankMessage(String bankMessage){this.bankMessage = bankMessage;}
     public LocalDateTime getCreatedAt(){return createdAt;}
+    
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 }

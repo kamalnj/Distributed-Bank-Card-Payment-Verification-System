@@ -33,6 +33,10 @@ public class TransactionService {
             tx.setStatus(bankResp.isSuccess() ? "SUCCESS" : "FAILED");
             tx.setBankCode(bankResp.getCode());
             tx.setBankMessage(bankResp.getMessage());
+            
+            // Stocker le userId
+            tx.setUserId(dto.getUserId());
+            
             repo.save(tx);
 
             TransactionResponse resp = new TransactionResponse();

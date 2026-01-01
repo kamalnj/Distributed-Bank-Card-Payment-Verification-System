@@ -22,7 +22,7 @@ public class PaymentService {
     @Value("${transaction.service.url}")
     private String transactionServiceUrl;
 
-    public PaymentResponseDTO createPayment(PaymentRequestDTO dto) {
+    public PaymentResponseDTO createPayment(PaymentRequestDTO dto, Long userId) {
 
         // 1️⃣ Validation minimale
         if (dto.getMontant() == null || dto.getMontant().doubleValue() <= 0) {
@@ -33,13 +33,18 @@ public class PaymentService {
         PaymentEntity pay = new PaymentEntity();
         pay.setMontant(dto.getMontant());
         pay.setStatus("CREATED");
+        pay.setUserId(userId);
 
         if (dto.getNumeroCarte() != null && dto.getNumeroCarte().length() >= 4) {
             pay.setCardLast4(dto.getNumeroCarte()
                 .substring(dto.getNumeroCarte().length() - 4));
         }
 
-        paymentRepository.save(pay);
+        // Use the returned entity to ensure we have the managed instance (with ID)
+        pay = paymentRepository.save(pay);
+
+        // Injecter userId dans le DTO pour le service de transaction
+        dto.setUserId(userId);
 
         // 3️⃣ Appel transaction-service
         PaymentResponseDTO txResp =
@@ -51,6 +56,7 @@ public class PaymentService {
 
         // 4️⃣ Mise à jour du paiement selon la réponse banque
         pay.setStatus(txResp.isSuccess() ? "SUCCESS" : "FAILED");
+        // Save again using the managed instance
         paymentRepository.save(pay);
 
         // 5️⃣ Renvoi FINAL vers le frontend

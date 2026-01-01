@@ -6,6 +6,7 @@ public class PaymentRequestDTO {
     private String numeroCarte;
     private String expiration;
     private String cvv;
+    private Long userId;
 
     public PaymentRequestDTO() {}
     // getters/setters
@@ -17,5 +18,6 @@ public class PaymentRequestDTO {
     public void setExpiration(String expiration){this.expiration = expiration;}
     public String getCvv(){return cvv;}
     public void setCvv(String cvv){this.cvv = cvv;}
-
+    public Long getUserId(){return userId;}
+    public void setUserId(Long userId){this.userId = userId;}
 }

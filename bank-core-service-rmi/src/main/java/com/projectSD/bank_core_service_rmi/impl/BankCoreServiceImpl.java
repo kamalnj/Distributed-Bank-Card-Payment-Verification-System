@@ -21,11 +21,25 @@ public class BankCoreServiceImpl extends UnicastRemoteObject implements BankCore
 
     @Override
     public BankResponse authorizePayment(String cardNumber, String expiration, String cvv, double amount) throws RemoteException {
+        System.out.println("BankCore: Authorizing payment for card: '" + cardNumber + "'");
+        
         BankCard card = repo.findById(cardNumber).orElse(null);
-        if (card == null) return new BankResponse(false, "CARTE_INEXISTANTE", "Carte non trouvée");
+        if (card == null) {
+            System.out.println("BankCore: Card not found in DB.");
+            return new BankResponse(false, "CARTE_INEXISTANTE", "Carte non trouvée");
+        }
+        
         if (!card.isActive()) return new BankResponse(false, "CARTE_BLOQUEE", "Carte bloquée");
-        if (!card.getExpiration().equals(expiration)) return new BankResponse(false, "CARTE_EXPIREE", "Date d'expiration non concordante");
-        if (!card.getCvv().equals(cvv)) return new BankResponse(false, "CVV_INVALIDE", "CVV invalide");
+        
+        // Validation optionnelle pour Paiement Rapide (si exp/cvv sont fournis)
+        if (expiration != null && !expiration.isBlank() && !card.getExpiration().equals(expiration)) {
+             return new BankResponse(false, "CARTE_EXPIREE", "Date d'expiration non concordante");
+        }
+        
+        if (cvv != null && !cvv.isBlank() && !card.getCvv().equals(cvv)) {
+            return new BankResponse(false, "CVV_INVALIDE", "CVV invalide");
+        }
+        
         if (card.getBalance() < amount) return new BankResponse(false, "SOLDE_INSUFFISANT", "Solde insuffisant");
 
         card.setBalance(card.getBalance() - amount);

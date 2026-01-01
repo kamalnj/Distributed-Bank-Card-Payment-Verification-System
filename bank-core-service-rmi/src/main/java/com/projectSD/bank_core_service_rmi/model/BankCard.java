@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 public class BankCard {
     @Id
     private String cardNumber;
-    private String expiration; // YYYY-MM
+    private String expiration;
     private String cvv;
     private double balance;
     private boolean active;
