@@ -167,7 +167,8 @@ export default function CreatePaymentRequest() {
       const res = await fetch("http://localhost:8083/merchant/api/payments", {
         method: "POST",
         headers: { 
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": authHeader
         },
         credentials: "include",
         body: JSON.stringify(payload),

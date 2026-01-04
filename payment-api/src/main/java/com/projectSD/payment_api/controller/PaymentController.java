@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.projectSD.payment_api.service.MobileTokenService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/merchant/api/payments")
@@ -36,6 +39,18 @@ public class PaymentController {
                 userId = uidOpt.get();
             }
         }
+        
+        // Try to get user from SecurityContext (JWT)
+        if (userId == null) {
+             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+             if (auth != null && auth.getDetails() instanceof Claims) {
+                 Claims claims = (Claims) auth.getDetails();
+                 if (claims.get("userId") != null) {
+                     userId = claims.get("userId", Long.class);
+                 }
+             }
+        }
+
         var session = request.getSession(false);
         if (session != null) {
             Object uid = session.getAttribute("userId");
